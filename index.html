@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing Tool</title>
+    <style>
+        body{
+            margin: 0px;
+        }
+        .fa-square{
+            margin-left: 30px;
+            margin-right: 2rem;
+        }
+        .icon-pallete{
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            margin-top: 35px;
+        }
+        .red{
+            height: 35px;
+            width: 35px;
+            border-radius: 50%;
+            background-color: red;
+        }
+        .green{
+            height: 35px;
+            width: 35px;
+            border-radius: 50%;
+            background-color: green;
+        }
+        .blue{
+            height: 35px;
+            width: 35px;
+            border-radius: 50%;
+            background-color: blue;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="icon-pallete">
+    <i class="far fa-square"></i>
+    <i class="fas fa-grip-lines"></i>
+    <i class="fas fa-pencil-alt"></i>
+    <div class="red"></div>
+        <div class="green"></div>
+        <div class="blue"></div>
+</div>
+    <canvas></canvas>
+</body>
+
+<script>
+    let canvasBoard = document.querySelector("canvas");
+    canvasBoard.height = window.innerHeight;
+    canvasBoard.width = window.innerWidth;
+    let tool = canvasBoard.getContext("2d");
+    let body = document.querySelector("body");
+    let rectTool = document.querySelector(".fa-square");
+    let lineTool = document.querySelector(".fa-grip-lines");
+    let pencilTool = document.querySelector(".fa-pencil-alt");
+    let redColor = document.querySelector(".red");
+    let greenColor = document.querySelector(".green");
+    let blueColor = document.querySelector(".blue");
+    let currTool = "rectTool";
+    let initialX, initialY, finalX, finalY;
+
+    let boardTop = canvasBoard.getBoundingClientRect().top;
+    let drawingMode = false;
+
+    rectTool.addEventListener("click", function(){
+        currTool = "rectTool";
+    });
+    lineTool.addEventListener("click", function(){
+        currTool = "lineTool";
+    });
+    pencilTool.addEventListener("click", function(){
+        currTool = "pencilTool";
+    });
+
+    redColor.addEventListener("click", function(){
+        tool.strokeStyle = "red";
+    })
+    greenColor.addEventListener("click", function(){
+        tool.strokeStyle = "green";
+    })
+    blueColor.addEventListener("click", function(){
+        tool.strokeStyle = "blue";
+    })
+
+    body.addEventListener("mousedown", function(e){
+        initialX = e.clientX;
+        initialY = e.clientY - boardTop;
+
+        if(currTool=="pencilTool"){
+            drawingMode = true;
+        } else {
+            drawingMode = false;
+        }
+    })
+    body.addEventListener("mouseup", function(e){
+
+        finalX = e.clientX;
+        finalY = e.clientY - boardTop;
+
+        let width = finalX - initialX;
+        let height = finalY - initialY;
+
+        if(currTool=="rectTool"){
+            tool.strokeRect(initialX, initialY, width, height);
+        } else if(currTool=="lineTool"){
+            tool.beginPath();
+            tool.moveTo(initialX, initialY);
+            tool.lineTo(finalX, finalY);
+            tool.stroke();
+        } else if(currTool=="pencilTool"){
+            drawingMode = false;
+        }
+    })
+    body.addEventListener("mousemove", function(e){
+        if(drawingMode){
+            tool.beginPath();
+            tool.moveTo(initialX, initialY);
+            let newX = e.clientX;
+            let newY = e.clientY - boardTop;
+            tool.lineTo(newX, newY);
+            tool.stroke();
+            initialX = newX;
+            initialY = newY;
+        }
+    })
+</script>
+</html>
