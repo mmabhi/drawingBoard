@@ -144,5 +144,38 @@
             initialY = newY;
         }
     })
+    body.addEventListener("touchstart", function(e){
+        if (e.target == body) {
+            e.preventDefault();
+        }
+        let touch = e.touches[0];
+        let mouseEvent = new MouseEvent("mousedown", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        body.dispatchEvent(mouseEvent);
+    })
+    body.addEventListener("touchend", function(e){
+        if (e.target == body) {
+            e.preventDefault();
+        }
+        let touch = e.changedTouches[0];
+        let mouseEvent = new MouseEvent("mouseup", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        body.dispatchEvent(mouseEvent);
+    })
+    body.addEventListener("touchmove", function(e){
+        if (e.target == body) {
+            e.preventDefault();
+        }
+        let touch = e.touches[0];
+        let mouseEvent = new MouseEvent("mousemove", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        body.dispatchEvent(mouseEvent);
+    })
 </script>
 </html>
