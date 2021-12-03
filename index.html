@@ -45,6 +45,7 @@
     <i class="far fa-square"></i>
     <i class="fas fa-grip-lines"></i>
     <i class="fas fa-pencil-alt"></i>
+    <i class="fas fa-eraser"></i>
     <div class="red"></div>
         <div class="green"></div>
         <div class="blue"></div>
@@ -61,6 +62,7 @@
     let rectTool = document.querySelector(".fa-square");
     let lineTool = document.querySelector(".fa-grip-lines");
     let pencilTool = document.querySelector(".fa-pencil-alt");
+    let eraserTool = document.querySelector(".fa-eraser");
     let redColor = document.querySelector(".red");
     let greenColor = document.querySelector(".green");
     let blueColor = document.querySelector(".blue");
@@ -72,13 +74,24 @@
 
     rectTool.addEventListener("click", function(){
         currTool = "rectTool";
+        tool.globalCompositeOperation = "source-over";
+        tool.lineWidth=1;
     });
     lineTool.addEventListener("click", function(){
         currTool = "lineTool";
+        tool.globalCompositeOperation = "source-over";
+        tool.lineWidth=1;
     });
     pencilTool.addEventListener("click", function(){
         currTool = "pencilTool";
+        tool.globalCompositeOperation = "source-over";
+        tool.lineWidth=1;
     });
+    eraserTool.addEventListener("click", function(){
+        currTool = "eraserTool";
+        tool.globalCompositeOperation = "destination-out";
+        tool.lineWidth=10;
+    })
 
     redColor.addEventListener("click", function(){
         tool.strokeStyle = "red";
@@ -94,7 +107,7 @@
         initialX = e.clientX;
         initialY = e.clientY - boardTop;
 
-        if(currTool=="pencilTool"){
+        if(currTool=="pencilTool" || currTool=="eraserTool"){
             drawingMode = true;
         } else {
             drawingMode = false;
@@ -115,7 +128,7 @@
             tool.moveTo(initialX, initialY);
             tool.lineTo(finalX, finalY);
             tool.stroke();
-        } else if(currTool=="pencilTool"){
+        } else if(currTool=="pencilTool" || currTool=="eraserTool"){
             drawingMode = false;
         }
     })
