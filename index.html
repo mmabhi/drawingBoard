@@ -1,59 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Drawing Tool</title>
     <style>
-        body{
-            margin: 0px;
-        }
-        .fa-square{
-            margin-left: 30px;
-            margin-right: 2rem;
-        }
-        .icon-pallete{
-            display: flex;
-            align-items: center;
-            justify-content: space-evenly;
-            margin-top: 35px;
-        }
-        .red{
-            height: 35px;
-            width: 35px;
-            border-radius: 50%;
-            background-color: red;
-        }
-        .green{
-            height: 35px;
-            width: 35px;
-            border-radius: 50%;
-            background-color: green;
-        }
-        .blue{
-            height: 35px;
-            width: 35px;
-            border-radius: 50%;
-            background-color: blue;
-        }
+      canvas {
+        touch-action: none;
+      }
+      body {
+        margin: 0px;
+      }
+      .fa-square {
+        margin-left: 30px;
+        margin-right: 2rem;
+      }
+      .icon-pallete {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        margin-top: 35px;
+      }
+      .red {
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        background-color: red;
+      }
+      .green {
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        background-color: green;
+      }
+      .blue {
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        background-color: blue;
+      }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
     <div class="icon-pallete">
-    <i class="far fa-square"></i>
-    <i class="fas fa-grip-lines"></i>
-    <i class="fas fa-pencil-alt"></i>
-    <i class="fas fa-eraser"></i>
-    <div class="red"></div>
-        <div class="green"></div>
-        <div class="blue"></div>
-</div>
+      <i class="far fa-square"></i>
+      <i class="fas fa-grip-lines"></i>
+      <i class="fas fa-pencil-alt"></i>
+      <i class="fas fa-eraser"></i>
+      <div class="red"></div>
+      <div class="green"></div>
+      <div class="blue"></div>
+    </div>
     <canvas></canvas>
-</body>
+  </body>
 
-<script>
+  <script>
     let canvasBoard = document.querySelector("canvas");
     canvasBoard.height = window.innerHeight;
     canvasBoard.width = window.innerWidth;
@@ -69,113 +78,116 @@
     let currTool = "rectTool";
     let initialX, initialY, finalX, finalY;
 
+    // tool.arc(50, 50, 50, 0, 50, false);
+    // tool.stroke();
+
     let boardTop = canvasBoard.getBoundingClientRect().top;
     let drawingMode = false;
 
-    rectTool.addEventListener("click", function(){
-        currTool = "rectTool";
-        tool.globalCompositeOperation = "source-over";
-        tool.lineWidth=1;
+    rectTool.addEventListener("click", function () {
+      currTool = "rectTool";
+      tool.globalCompositeOperation = "source-over";
+      tool.lineWidth = 1;
     });
-    lineTool.addEventListener("click", function(){
-        currTool = "lineTool";
-        tool.globalCompositeOperation = "source-over";
-        tool.lineWidth=1;
+    lineTool.addEventListener("click", function () {
+      currTool = "lineTool";
+      tool.globalCompositeOperation = "source-over";
+      tool.lineWidth = 1;
     });
-    pencilTool.addEventListener("click", function(){
-        currTool = "pencilTool";
-        tool.globalCompositeOperation = "source-over";
-        tool.lineWidth=1;
+    pencilTool.addEventListener("click", function () {
+      currTool = "pencilTool";
+      tool.globalCompositeOperation = "source-over";
+      tool.lineWidth = 1;
     });
-    eraserTool.addEventListener("click", function(){
-        currTool = "eraserTool";
-        tool.globalCompositeOperation = "destination-out";
-        tool.lineWidth=10;
-    })
+    eraserTool.addEventListener("click", function () {
+      currTool = "eraserTool";
+      tool.globalCompositeOperation = "destination-out";
+      tool.lineWidth = 10;
+    });
 
-    redColor.addEventListener("click", function(){
-        tool.strokeStyle = "red";
-    })
-    greenColor.addEventListener("click", function(){
-        tool.strokeStyle = "green";
-    })
-    blueColor.addEventListener("click", function(){
-        tool.strokeStyle = "blue";
-    })
+    redColor.addEventListener("click", function () {
+      tool.strokeStyle = "red";
+    });
+    greenColor.addEventListener("click", function () {
+      tool.strokeStyle = "green";
+    });
+    blueColor.addEventListener("click", function () {
+      tool.strokeStyle = "blue";
+    });
 
-    body.addEventListener("mousedown", function(e){
-        initialX = e.clientX;
-        initialY = e.clientY - boardTop;
+    body.addEventListener("mousedown", function (e) {
+      initialX = e.clientX;
+      initialY = e.clientY - boardTop;
 
-        if(currTool=="pencilTool" || currTool=="eraserTool"){
-            drawingMode = true;
-        } else {
-            drawingMode = false;
-        }
-    })
-    body.addEventListener("mouseup", function(e){
+      if (currTool == "pencilTool" || currTool == "eraserTool") {
+        drawingMode = true;
+      } else {
+        drawingMode = false;
+      }
+    });
+    body.addEventListener("mouseup", function (e) {
+      finalX = e.clientX;
+      finalY = e.clientY - boardTop;
 
-        finalX = e.clientX;
-        finalY = e.clientY - boardTop;
+      let width = finalX - initialX;
+      let height = finalY - initialY;
 
-        let width = finalX - initialX;
-        let height = finalY - initialY;
-
-        if(currTool=="rectTool"){
-            tool.strokeRect(initialX, initialY, width, height);
-        } else if(currTool=="lineTool"){
-            tool.beginPath();
-            tool.moveTo(initialX, initialY);
-            tool.lineTo(finalX, finalY);
-            tool.stroke();
-        } else if(currTool=="pencilTool" || currTool=="eraserTool"){
-            drawingMode = false;
-        }
-    })
-    body.addEventListener("mousemove", function(e){
-        if(drawingMode){
-            tool.beginPath();
-            tool.moveTo(initialX, initialY);
-            let newX = e.clientX;
-            let newY = e.clientY - boardTop;
-            tool.lineTo(newX, newY);
-            tool.stroke();
-            initialX = newX;
-            initialY = newY;
-        }
-    })
-    body.addEventListener("touchstart", function(e){
-        if (e.target == body) {
-            e.preventDefault();
-        }
-        let touch = e.touches[0];
-        let mouseEvent = new MouseEvent("mousedown", {
-            clientX: touch.clientX,
-            clientY: touch.clientY
-        });
-        body.dispatchEvent(mouseEvent);
-    })
-    body.addEventListener("touchend", function(e){
-        if (e.target == body) {
-            e.preventDefault();
-        }
-        let touch = e.changedTouches[0];
-        let mouseEvent = new MouseEvent("mouseup", {
-            clientX: touch.clientX,
-            clientY: touch.clientY
-        });
-        body.dispatchEvent(mouseEvent);
-    })
-    body.addEventListener("touchmove", function(e){
-        if (e.target == body) {
-            e.preventDefault();
-        }
-        let touch = e.touches[0];
-        let mouseEvent = new MouseEvent("mousemove", {
-            clientX: touch.clientX,
-            clientY: touch.clientY
-        });
-        body.dispatchEvent(mouseEvent);
-    })
-</script>
+      if (currTool == "rectTool") {
+        tool.strokeRect(initialX, initialY, width, height);
+      } else if (currTool == "lineTool") {
+        tool.beginPath();
+        tool.moveTo(initialX, initialY);
+        tool.lineTo(finalX, finalY);
+        tool.stroke();
+      } else if (currTool == "pencilTool" || currTool == "eraserTool") {
+        drawingMode = false;
+      }
+    });
+    body.addEventListener("mousemove", function (e) {
+      if (drawingMode) {
+        tool.beginPath();
+        tool.moveTo(initialX, initialY);
+        let newX = e.clientX;
+        let newY = e.clientY - boardTop;
+        tool.lineTo(newX, newY);
+        tool.stroke();
+        initialX = newX;
+        initialY = newY;
+      }
+    });
+    body.addEventListener("touchstart", function (e) {
+      // console.log(e);
+      if (e.target == "canvas") {
+        e.preventDefault();
+      }
+      let touch = e.touches[0];
+      let mouseEvent = new MouseEvent("mousedown", {
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+      });
+      body.dispatchEvent(mouseEvent);
+    });
+    body.addEventListener("touchend", function (e) {
+      if (e.target == "canvas") {
+        e.preventDefault();
+      }
+      let touch = e.changedTouches[0];
+      let mouseEvent = new MouseEvent("mouseup", {
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+      });
+      body.dispatchEvent(mouseEvent);
+    });
+    body.addEventListener("touchmove", function (e) {
+      if (e.target == "canvas") {
+        e.preventDefault();
+      }
+      let touch = e.touches[0];
+      let mouseEvent = new MouseEvent("mousemove", {
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+      });
+      body.dispatchEvent(mouseEvent);
+    });
+  </script>
 </html>
